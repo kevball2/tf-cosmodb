@@ -1,0 +1,60 @@
+resource "azurerm_cosmosdb_sql_container" "this" {
+  name                   = var.name
+  resource_group_name    = var.resource_group_name
+  account_name           = var.account_name
+  database_name          = var.database_name
+  partition_key_path     = var.partition_key_path
+  partition_key_version  = var.partition_key_version
+  throughput             = var.throughput
+  default_ttl            = var.default_ttl
+  analytical_storage_ttl = var.analytical_storage_ttl
+
+  dynamic "unique_key" {
+    for_each = var.value.unique_key == null ? [] : var.value.unique_key
+    content {
+      paths = unique_key.value.paths
+    }
+  }
+
+  dynamic "autoscale_settings" {
+    for_each = var.value.autoscale_settings == null ? [] : var.value.autoscale_settings
+    content {
+      max_throughput = autoscale_settings.value.max_throughput
+    }
+  }
+
+  dynamic "indexing_policy" {
+    for_each = var.value.indexing_policy == null ? [] : var.value.indexing_policy
+    content {
+      indexing_mode = indexing_policy.value.indexing_mode
+
+      included_path {
+        path = included_path.value.path
+      }
+
+      excluded_path {
+        path = included_path.value.path
+      }
+
+      composite_index {
+        index {
+          path  = composite_index.value.path
+          order = composite_index.value.order
+        }
+      }
+
+      spatial_index {
+        path = spatial_index.value.path
+      }
+    }
+  }
+
+  dynamic "conflict_resolution_policy" {
+    for_each = var.value.indexing_policy == null ? [] : var.value.indexing_policy
+    content {
+      mode                          = conflict_resolution_policy.value.mode
+      conflict_resolution_path      = conflict_resolution_policy.value.conflict_resolution_path
+      conflict_resolution_procedure = conflict_resolution_policy.value.conflict_resolution_procedure
+    }
+  }
+}

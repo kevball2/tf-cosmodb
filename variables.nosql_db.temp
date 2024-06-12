@@ -1,0 +1,42 @@
+# variable "account_name" {
+#   type            = string
+#   description     = "(Required) The name of the Cosmos DB SQL Database to create the table within. Changing this forces a new resource to be created."
+#   nullable        = false
+
+# }
+
+# variable "throughput" {
+#   type            = number
+#   description     = "(Optional) The throughput of SQL database (RU/s). Must be set in increments of 100. The minimum value is 400. This must be set upon database creation otherwise it cannot be updated without a manual terraform destroy-apply. Do not set when azurerm_cosmosdb_account is configured with EnableServerless capability."
+
+# }
+
+# variable "autoscale_settings"{
+#   type            = object({
+#   max_throughput = {
+#     type          = number
+#     }
+#   })
+#   default = null
+#   description     = "max_throughput - (Optional) The maximum throughput of the SQL database (RU/s). Must be between 1,000 and 1,000,000. Must be set in increments of 1,000. Conflicts with throughput."
+# }
+
+# below is here for reference to rework and nest containers
+#variable "sql_databases" {
+#    type = map(object({
+#      account_name = string
+#      name = string
+#      resource_group_name = string
+#      throughput = optional(number, null)
+#      autoscale_settings = optional(object({
+#        max_throughput = optional(number, null)
+#      }), null)
+#      containers = optional(map(object({
+#        name = string
+#        database_name = string
+#        partition_key_path = string
+#        partition_key_version = optional(number, null)
+#        throughput = optional(number, null)
+#      })), null)
+#    }))
+#}

@@ -1,0 +1,16 @@
+resource "azurerm_cosmosdb_sql_role_definition" "this" {
+  name                = var.name
+  resource_group_name = var.resource_group_name
+  account_name        = var.account_name
+  assignable_scopes   = var.assignable_scopes
+  role_definition_id  = var.role_definition_id
+  type                = var.type
+
+  dynamic "permissions" {
+    for_each = var.value.permissions == null ? [] : var.value.permission
+    content {
+      data_actions = permissions.value.data_actions
+    }
+  }
+
+}

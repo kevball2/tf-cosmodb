@@ -1,0 +1,9 @@
+
+include:
+- project: hs/ecm-operations/azure/azure-deployments/terraform-module-testing
+  ref: main
+  file: .gitlab-ci.yml
+
+
+
+ 
